@@ -38,8 +38,10 @@ symbols_valid_meta_stocks_security_name = symbols_valid_meta_stocks['Security Na
 symbols_valid_meta_etfs_symbol = symbols_valid_meta_etfs.Symbol.to_list()
 symbols_valid_meta_etfs_security_name = symbols_valid_meta_etfs['Security Name'].to_list()
 
-os.mkdir('stocks_result')
-os.mkdir('etfs_result')
+if not os.path.exists("stocks_result"):
+	os.mkdir('stocks_result')
+if not os.path.exists("etfs_result"):
+	os.mkdir('etfs_result')
 
 def process_stock_file(symbol):
     df = pd.read_csv('stocks/'+symbol+'.csv')
@@ -61,7 +63,7 @@ for max_threads in max_threads_list:
     execution_time = end_time - start_time
     print("STOCK Execution time:", execution_time)
 
-    def process_etf_file(symbol):
+def process_etf_file(symbol):
     df = pd.read_csv('etfs/'+symbol+'.csv')
     df['Symbol'] = symbol
     df['Security Name'] = symbols_valid_meta_etfs_security_name[symbols_valid_meta_etfs_symbol.index(symbol)]

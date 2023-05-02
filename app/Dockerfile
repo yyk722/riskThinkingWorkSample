@@ -1,5 +1,5 @@
 # BUILD: docker build --rm -t 
-FROM python:3.11.1
+FROM python:3.9
 LABEL maintainer="Ken"
 
 # Never prompts the user for choices on installation/configuration of packages
