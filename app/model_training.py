@@ -8,6 +8,8 @@ import pandas as pd
 import h2o
 from h2o.automl import H2OAutoML
 
+n_stocks = 10
+
 h2o.init()
 
 df_list = []
@@ -20,7 +22,7 @@ for path in pathlist:
     else:
         df['etf'] = False
     df_list.append(df)
-    if len(df_list)>10:
+    if len(df_list)>n_stocks:
         break
 
 pathlist = Path('./stage/etfs_result').rglob('*.parquet')
@@ -32,7 +34,7 @@ for path in pathlist:
     else:
         df['etf'] = False
     df_list.append(df)
-    if len(df_list)>20:
+    if len(df_list)>n_stocks*2:
         break
 
 data = pd.concat(df_list)

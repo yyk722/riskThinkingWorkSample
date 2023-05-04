@@ -1,12 +1,39 @@
-import unittest
 import talib.abstract as ta
+import os
+import time
+import concurrent.futures
+import pandas as pd
+
+dtypes = {
+    'Symbol': str,
+    'Security Name': str,
+    'Date': str,
+    'Open': float,
+    'High': float,
+    'Low': float,
+    'Close': float,
+    'Adj Close': float,
+    'Volume': int
+    }
 
 if not os.path.exists("stage"):
-	os.mkdir('stage')
+    os.mkdir('stage')
 if not os.path.exists("stage/stocks_result"):
-	os.mkdir('stage/stocks_result')
+    os.mkdir('stage/stocks_result')
 if not os.path.exists("stage/etfs_result"):
-	os.mkdir('stage/etfs_result')
+    os.mkdir('stage/etfs_result')
+
+symbols_valid_meta = pd.read_csv("symbols_valid_meta.csv")
+symbols_valid_meta = symbols_valid_meta[['Symbol', 'Security Name', 'ETF']]
+
+symbols_valid_meta_stocks = symbols_valid_meta[symbols_valid_meta.ETF=='N']
+symbols_valid_meta_etfs = symbols_valid_meta[symbols_valid_meta.ETF=='Y']
+
+symbols_valid_meta_stocks_symbol = symbols_valid_meta_stocks.Symbol.to_list()
+symbols_valid_meta_stocks_security_name = symbols_valid_meta_stocks['Security Name'].to_list()
+symbols_valid_meta_etfs_symbol = symbols_valid_meta_etfs.Symbol.to_list()
+symbols_valid_meta_etfs_security_name = symbols_valid_meta_etfs['Security Name'].to_list()
+
 
 def fe_stock_file(symbol):
     df = pd.read_parquet('stocks_result/'+symbol+'.parquet')
