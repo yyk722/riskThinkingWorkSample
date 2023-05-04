@@ -1,12 +1,12 @@
 # BUILD: docker build --rm -t 
-FROM python:3.9
+FROM python:3.10
 LABEL maintainer="Ken"
 
 # Never prompts the user for choices on installation/configuration of packages
 ENV DEBIAN_FRONTEND noninteractive
 ENV TERM linux
+ENV PYTHON_TA_LIB_VERSION "0.4.24"
 
-# Airflow
 RUN apt-get update && \
     apt-get upgrade -y && \
     apt-get install -y git && \
@@ -29,5 +29,20 @@ ENV PATH=$PATH:/opt/java/jdk-15.0.2/bin
 
 RUN mkdir /opt/java && \
     curl https://download.java.net/java/GA/jdk15.0.2/0d1cfde4252546c6931946de8db48ee2/7/GPL/openjdk-15.0.2_linux-x64_bin.tar.gz | tar -xz -C /opt/java/
+
+# TA-Lib
+RUN cd /tmp \
+    && curl -L -O http://prdownloads.sourceforge.net/ta-lib/ta-lib-0.4.0-src.tar.gz \
+    && tar -zxf ta-lib-0.4.0-src.tar.gz \
+    && cd ta-lib/ \
+    && ./configure --prefix=/usr \
+    && make \
+    && make install \
+    && pip3 install setuptools numpy \
+    && pip3 install ta-lib==${PYTHON_TA_LIB_VERSION} \
+    && rm -rf /root/.cache \
+              /tmp/* \
+              /var/cache/apk/* \
+              /var/lib/apk/lists/*
 
 WORKDIR /
