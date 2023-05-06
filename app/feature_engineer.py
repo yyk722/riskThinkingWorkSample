@@ -1,4 +1,9 @@
-import talib.abstract as ta
+import subprocess
+cmd_str = 'pip install pandas-ta'
+subprocess.run(cmd_str, shell=True)
+
+#import talib.abstract as ta
+import pandas_ta as pta
 import os
 import time
 import concurrent.futures
@@ -49,9 +54,9 @@ def fe_stock_file(symbol):
     df["adj_close_rolling_med"] = df["Adj Close"].rolling(window=30).median()
     
     # RSI
-    df['rsi'] = ta.RSI(df)
+    df['rsi'] = pta.rsi(df['close'], length = 30)
     # TEMA - Triple Exponential Moving Average
-    df["tema"] = ta.TEMA(df, timeperiod=30)
+    df["tema"] = pta.ma('tema', df['close'], length=30)
 
     # Drop any rows with missing values
     df.dropna(inplace=True)
@@ -86,9 +91,9 @@ def fe_etf_file(symbol):
     df["adj_close_rolling_med"] = df["Adj Close"].rolling(window=30).median()
 
     # RSI
-    df['rsi'] = ta.RSI(df)
+    df['rsi'] = pta.rsi(df['close'], length = 30)
     # TEMA - Triple Exponential Moving Average
-    df["tema"] = ta.TEMA(df, timeperiod=30)
+    df["tema"] = pta.ma('tema', df['close'], length=30)
     
     # Drop any rows with missing values
     df.dropna(inplace=True)

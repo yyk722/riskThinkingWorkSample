@@ -6,6 +6,9 @@ import os
 import concurrent.futures
 import time
 
+cmd_str = 'pip install -q kaggle'
+subprocess.run(cmd_str, shell=True)
+
 os.environ['KAGGLE_USERNAME'] = "yyk722" # username from the json file
 os.environ['KAGGLE_KEY'] = "18d96fe82c283d0153d782f86e597ac3" # key from the json file
 
@@ -39,9 +42,9 @@ symbols_valid_meta_etfs_symbol = symbols_valid_meta_etfs.Symbol.to_list()
 symbols_valid_meta_etfs_security_name = symbols_valid_meta_etfs['Security Name'].to_list()
 
 if not os.path.exists("stocks_result"):
-	os.mkdir('stocks_result')
+    os.mkdir('stocks_result')
 if not os.path.exists("etfs_result"):
-	os.mkdir('etfs_result')
+    os.mkdir('etfs_result')
 
 def process_stock_file(symbol):
     df = pd.read_csv('stocks/'+symbol+'.csv')
